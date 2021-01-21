@@ -24,22 +24,22 @@
           ></v-text-field>
     </v-col>
     <v-col lg="1">
-      <v-btn
+      <router-link to="/order"><v-btn
         text
-        color="success"
+        color="white"
         class="mr-2"
       >
         <v-icon left>
           mdi-cart-outline
         </v-icon>
-      </v-btn>
+      </v-btn></router-link>
 
-      <v-avatar
+      <router-link to="/account"><v-avatar
         color="orange"
         size="50"
       >
         <span class="white--text headline">JP</span>
-      </v-avatar>
+      </v-avatar></router-link>
     </v-col>
     </v-row>
     </v-app-bar>
