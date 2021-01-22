@@ -13,27 +13,12 @@ namespace arz.eda.Models
         /// <summary>
         /// Идентификатор
         /// </summary>
-        public Guid ID = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         /// <summary>
         /// Имя
         /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Логин
-        /// </summary>
-        public string Login { get; set; }
-
-        /// <summary>
-        /// Пароль
-        /// </summary>
-        public string Password { get; set; }
-
-        /// <summary>
-        /// Изображение (аватар)
-        /// </summary>
-        public string Image { get; set; }
 
         /// <summary>
         /// Адрес
@@ -43,7 +28,7 @@ namespace arz.eda.Models
         /// <summary>
         /// Подъезд
         /// </summary>
-        public int Entrance { get; set; }
+        public string Entrance { get; set; }
 
         /// <summary>
         /// Домофон
@@ -59,7 +44,7 @@ namespace arz.eda.Models
         /// <summary>
         /// Квартира
         /// </summary>
-        public int Flat { get; set; }
+        public string Flat { get; set; }
 
         /// <summary>
         /// Список заказов

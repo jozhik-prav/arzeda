@@ -13,7 +13,7 @@ namespace arz.eda.Models
         /// <summary>
         /// Идентификатор ресторана
         /// </summary>
-        public Guid ID = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
         
         /// <summary>
         /// Имя 
@@ -43,7 +43,7 @@ namespace arz.eda.Models
         /// <summary>
         /// Категория, кухня
         /// </summary>
-        public string Category { get; set; }
+        public ICollection<Category> Categories { get; set; }
 
         /// <summary>
         /// Меню

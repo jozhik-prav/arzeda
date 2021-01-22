@@ -13,15 +13,15 @@ namespace arz.eda.Models
         /// <summary>
         /// Идентификатор
         /// </summary>
-        public Guid ID = Guid.NewGuid();
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         /// <summary>
-        /// Дата заказа
+        /// Дата и время заказа
         /// </summary>
         public DateTime Date { get; set; }
 
         /// <summary>
-        /// Дата доставки
+        /// Дата и время доставки
         /// </summary>
         public DateTime DateDelivery { get; set; }
 
@@ -33,7 +33,7 @@ namespace arz.eda.Models
         /// <summary>
         /// Подъезд
         /// </summary>
-        public int Entrance { get; set; }
+        public string Entrance { get; set; }
 
         /// <summary>
         /// Домофон
@@ -48,7 +48,7 @@ namespace arz.eda.Models
         /// <summary>
         /// Квартира
         /// </summary>
-        public int Flat { get; set; }
+        public string Flat { get; set; }
 
         /// <summary>
         /// Сумма
@@ -63,12 +63,16 @@ namespace arz.eda.Models
         /// <summary>
         /// Идентификатор заказчика
         /// </summary>
-        public Guid AccountID { get; set; }
+        public Guid AccountId { get; set; }
+
+        public Account Account { get; set; }
 
         /// <summary>
         /// Идентификатор ресторана
         /// </summary>
-        public Guid RestaurantID { get; set;}
+        public Guid RestaurantId { get; set;}
+
+        public Restaurant Restaurant { get; set; }
 
         /// <summary>
         /// Позиции 
@@ -82,11 +86,7 @@ namespace arz.eda.Models
     /// </summary>
     public class OrderLine
     {
-        /// <summary>
-        /// Идентификатор позиции
-        /// </summary>
-        public Guid ID = Guid.NewGuid();
-
+        public Guid ProductId { get; set; }
         /// <summary>
         /// Продукт
         /// </summary>
@@ -96,6 +96,8 @@ namespace arz.eda.Models
         /// Количество
         /// </summary>
         public int Quantity { get; set; }
+
+        public decimal Price { get; set; }
 
     }
 }
