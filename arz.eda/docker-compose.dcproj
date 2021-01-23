@@ -6,7 +6,7 @@
     <ProjectGuid>cbfc5c7d-8721-42b9-8430-36306d005ed8</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}/weatherforecast</DockerServiceUrl>
-    <DockerServiceName>arz.eda</DockerServiceName>
+    <DockerServiceName>web</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="docker-compose.override.yml">
