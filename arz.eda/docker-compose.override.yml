@@ -1,0 +1,6 @@
+version: '3.4'
+
+services:
+  arz.eda:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development

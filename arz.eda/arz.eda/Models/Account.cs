@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Identity;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,13 +9,8 @@ namespace arz.eda.Models
     /// <summary>
     /// Клиент
     /// </summary>
-    public class Account
+    public class Account : IdentityUser
     {
-        /// <summary>
-        /// Идентификатор
-        /// </summary>
-        public Guid Id { get; set; } = Guid.NewGuid();
-
         /// <summary>
         /// Имя
         /// </summary>

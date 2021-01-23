@@ -9,6 +9,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using arz.eda.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace arz.eda
 {
@@ -24,6 +27,12 @@ namespace arz.eda
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+            services.AddDbContext<ApplicationContext>(options =>
+                options.UseNpgsql(connectionString));
+
+            services.AddIdentity<Account, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationContext>();
 
             services.AddControllers();
         }
@@ -37,6 +46,8 @@ namespace arz.eda
             }
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

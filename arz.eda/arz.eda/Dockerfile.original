@@ -1,7 +1,7 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-buster-slim AS base
-WORKDIR /app
+WORKDIR /api
 EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0-buster-slim AS build
@@ -10,12 +10,12 @@ COPY ["arz.eda/arz.eda.csproj", "arz.eda/"]
 RUN dotnet restore "arz.eda/arz.eda.csproj"
 COPY . .
 WORKDIR "/src/arz.eda"
-RUN dotnet build "arz.eda.csproj" -c Release -o /app/build
+RUN dotnet build "arz.eda.csproj" -c Release -o /api/build
 
 FROM build AS publish
-RUN dotnet publish "arz.eda.csproj" -c Release -o /app/publish
+RUN dotnet publish "arz.eda.csproj" -c Release -o /api/publish
 
 FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
+WORKDIR /api
+COPY --from=publish /api/publish .
 ENTRYPOINT ["dotnet", "arz.eda.dll"]
