@@ -17,169 +17,26 @@
             <v-chip class="ma-2">Мясо и рыба</v-chip>
           </v-chip-group>
           <div class="grid-container">
-            <router-link to="/restaurant"><v-card
+            <router-link v-for="restaurant in restaurants" :key="restaurant.id" :to="'/restaurant/' + restaurant.id"><v-card
               class="mx-auto"
               max-width="344"
             >
               <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-                height="160px"
+                :src="restaurant.image"
+                height="200px"
               ></v-img>
 
               <v-card-title>
-                Top western road trips
+                {{ restaurant.name }}
               </v-card-title>
 
               <v-card-actions>
                 <v-chip-group active-class="blue white--text">
                   <v-chip class="ma-2">30 мин</v-chip>
-                  <v-chip class="ma-2">От 1 ₽</v-chip>
+                  <v-chip class="ma-2">От {{ restaurant.minSum }} ₽</v-chip>
                 </v-chip-group>
               </v-card-actions>
             </v-card></router-link>
-            <v-card
-              class="mx-auto"
-              max-width="344"
-            >
-              <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-                height="160px"
-              ></v-img>
-
-              <v-card-title>
-                Top western road trips
-              </v-card-title>
-
-              <v-card-actions>
-                <v-chip-group active-class="blue white--text">
-                  <v-chip class="ma-2">30 мин</v-chip>
-                  <v-chip class="ma-2">От 1 ₽</v-chip>
-                </v-chip-group>
-              </v-card-actions>
-            </v-card>
-            <v-card
-              class="mx-auto"
-              max-width="344"
-            >
-              <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-                height="160px"
-              ></v-img>
-
-              <v-card-title>
-                Top western road trips
-              </v-card-title>
-
-              <v-card-actions>
-                <v-chip-group active-class="blue white--text">
-                  <v-chip class="ma-2">30 мин</v-chip>
-                  <v-chip class="ma-2">От 1 ₽</v-chip>
-                </v-chip-group>
-              </v-card-actions>
-            </v-card>
-            <v-card
-              class="mx-auto"
-              max-width="344"
-            >
-              <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-                height="160px"
-              ></v-img>
-
-              <v-card-title>
-                Top western road trips
-              </v-card-title>
-
-              <v-card-actions>
-                <v-chip-group active-class="blue white--text">
-                  <v-chip class="ma-2">30 мин</v-chip>
-                  <v-chip class="ma-2">От 1 ₽</v-chip>
-                </v-chip-group>
-              </v-card-actions>
-            </v-card>
-            <v-card
-              class="mx-auto"
-              max-width="344"
-            >
-              <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-                height="160px"
-              ></v-img>
-
-              <v-card-title>
-                Top western road trips
-              </v-card-title>
-
-              <v-card-actions>
-                <v-chip-group active-class="blue white--text">
-                  <v-chip class="ma-2">30 мин</v-chip>
-                  <v-chip class="ma-2">От 1 ₽</v-chip>
-                </v-chip-group>
-              </v-card-actions>
-            </v-card>
-            
-            <v-card
-              class="mx-auto"
-              max-width="344"
-            >
-              <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-                height="160px"
-              ></v-img>
-
-              <v-card-title>
-                Top western road trips
-              </v-card-title>
-
-              <v-card-actions>
-                <v-chip-group active-class="blue white--text">
-                  <v-chip class="ma-2">30 мин</v-chip>
-                  <v-chip class="ma-2">От 1 ₽</v-chip>
-                </v-chip-group>
-              </v-card-actions>
-            </v-card>
-            
-            <v-card
-              class="mx-auto"
-              max-width="344"
-            >
-              <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-                height="160px"
-              ></v-img>
-
-              <v-card-title>
-                Top western road trips
-              </v-card-title>
-
-              <v-card-actions>
-                <v-chip-group active-class="blue white--text">
-                  <v-chip class="ma-2">30 мин</v-chip>
-                  <v-chip class="ma-2">От 1 ₽</v-chip>
-                </v-chip-group>
-              </v-card-actions>
-            </v-card>
-            
-            <v-card
-              class="mx-auto"
-              max-width="344"
-            >
-              <v-img
-                src="https://cdn.vuetifyjs.com/images/cards/sunshine.jpg"
-                height="160px"
-              ></v-img>
-
-              <v-card-title>
-                Top western road trips
-              </v-card-title>
-
-              <v-card-actions>
-                <v-chip-group active-class="blue white--text">
-                  <v-chip class="ma-2">30 мин</v-chip>
-                  <v-chip class="ma-2">От 1 ₽</v-chip>
-                </v-chip-group>
-              </v-card-actions>
-            </v-card>
           </div>
           </div>
 </template>
@@ -193,7 +50,40 @@ import { Component, Vue } from "vue-property-decorator";
    // HelloWorld
   }
 })
-export default class Home extends Vue {}
+export default class Home extends Vue {
+  restaurants: Restaurant[] = [];
+
+  async mounted() {
+    this.restaurants = (await this.$axios.get("/api/restaurant")).data;
+    console.log(this.restaurants);
+  }
+}
+
+export interface Restaurant {
+  id: string,
+  name: string,
+  description: string,
+  image: string,
+  address: string,
+  timeWork: string,
+  categories: [Category];
+  products: [Product],
+  deliveryPrice: number,
+  minSum: number
+}
+
+export interface Category {
+  id: string,
+  name: string
+}
+
+export interface Product {
+  id: string,
+  name: string,
+  price: number,
+  description: string,
+  image: string
+}
 </script>
 
 <style lang="scss" scoped>
