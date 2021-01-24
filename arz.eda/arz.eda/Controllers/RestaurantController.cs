@@ -23,16 +23,27 @@ namespace arz.eda.Controllers
         public async Task<IActionResult> GetAll(Guid? categoryId = null)
         {
             if (categoryId == null)
-                return Ok(await _db.Restaurants.Include(x => x.Categories).Include(x => x.Products).Select(x => new {x.Id, x.Name, x.Description, x.Address, x.Image, x.Categories, x.Products, x.TimeWork, x.DeliveryPrice, x.MinSum}).ToListAsync());
+                return Ok(await _db.Restaurants.Include(x => x.Categories).Include(x => x.Products).Select(x =>
+                    new
+                    {
+                        x.Id, x.Name, x.Description, x.Address, x.Image, x.Categories, x.Products, x.TimeWork,
+                        x.DeliveryPrice, x.MinSum
+                    }).ToListAsync());
 
-            return Ok(await _db.Restaurants.Include(x=>x.Categories).Include(x => x.Products).Where(x => x.Categories.Any(c => c.Id == categoryId)).ToListAsync());
+            return Ok(await _db.Restaurants.Include(x => x.Categories).Include(x => x.Products)
+                .Where(x => x.Categories.Any(c => c.Id == categoryId)).ToListAsync());
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            return Ok(await _db.Restaurants.Include(x => x.Categories).Include(x => x.Products).FirstOrDefaultAsync(x => x.Id == id));
+            return Ok(await _db.Restaurants.Include(x => x.Categories).Include(x => x.Products)
+                .Select(x => new
+                {
+                    x.Id, x.Name, x.Description, x.Address, x.Image, x.Categories, x.Products, x.TimeWork,
+                    x.DeliveryPrice, x.MinSum
+                }).FirstOrDefaultAsync(x => x.Id == id));
         }
 
         [HttpPost]
