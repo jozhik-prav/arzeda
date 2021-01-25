@@ -23,7 +23,7 @@ namespace arz.eda.Models
         /// <summary>
         /// Дата и время доставки
         /// </summary>
-        public DateTime DateDelivery { get; set; }
+        //public DateTime DateDelivery { get; set; }
 
         /// <summary>
         /// Адрес доставки
@@ -63,9 +63,9 @@ namespace arz.eda.Models
         /// <summary>
         /// Идентификатор заказчика
         /// </summary>
-        public string AccountId { get; set; }
+        //public string AccountId { get; set; }
 
-        public Account Account { get; set; }
+       // public Account Account { get; set; }
 
         /// <summary>
         /// Идентификатор ресторана

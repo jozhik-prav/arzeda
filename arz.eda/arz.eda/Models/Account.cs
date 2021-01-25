@@ -45,6 +45,6 @@ namespace arz.eda.Models
         /// <summary>
         /// Список заказов
         /// </summary>
-        public ICollection<Order> Orders { get; set; }
+       // public ICollection<Order> Orders { get; set; }
     }
 }
