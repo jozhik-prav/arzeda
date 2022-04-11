@@ -2,7 +2,12 @@ FROM node:15-alpine
 
 WORKDIR /app
 
-RUN npm install
+COPY package.json ./
+COPY package-lock.json ./
+
+RUN npm ci
+
+COPY . .
 
 EXPOSE 8080
 

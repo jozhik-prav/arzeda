@@ -35,15 +35,16 @@ services:
     environment:
       POSTGRES_USER: "jozh_admin"
       POSTGRES_PASSWORD: "jozhvilis777"
+      POSTGRES_DB: "arzeda"
   arzeda.front:
     image: ${DOCKER_REGISTRY-}arzeda.front
     build:
-      context: .
-      dockerfile: ../arzeda.front/Dockerfile
+      context: ../arzeda.front/
     ports:
       - "8080:8080"
     volumes:
       - "../arzeda.front:/app"
+      - /app/node_modules
     environment:
       - CHOKIDAR_USEPOLLING=true  
 volumes:
