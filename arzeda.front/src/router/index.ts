@@ -31,6 +31,11 @@ const routes: Array<RouteConfig> = [
 		name: 'Admin',
 		component: () => import('../views/Admin.vue'),
 	},
+	{
+		path: '/admin-restaurant',
+		name: 'AdminRestaurant',
+		component: () => import('../views/Admin-restaurant.vue'),
+	},
 ]
 
 const router = new VueRouter({
