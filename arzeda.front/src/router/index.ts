@@ -41,6 +41,16 @@ const routes: Array<RouteConfig> = [
 		name: 'AdminCourier',
 		component: () => import('../views/Admin-courier.vue'),
 	},
+	{
+		path: '/login',
+		name: 'Login',
+		component: () => import('../views/Login.vue'),
+	},
+	{
+		path: '/registration',
+		name: 'Registration',
+		component: () => import('../views/Registration.vue'),
+	},
 ]
 
 const router = new VueRouter({
