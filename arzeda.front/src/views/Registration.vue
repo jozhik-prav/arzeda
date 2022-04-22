@@ -4,22 +4,17 @@
 			<h3 class="headline mb-0">Зарегистрироваться</h3>
 		</v-card-title>
 		<v-card-text>
-			<v-form ref="form" v-model="valid" lazy-validation>
-				<v-text-field
-					v-model="name"
-					:counter="10"
-					:rules="nameRules"
-					label="Name"
-					required
-				></v-text-field>
+			<v-form ref="form" v-model="valid">
 				<v-text-field
 					v-model="email"
-					:rules="emailRules"
 					label="E-mail"
+					:rules="emailRules"
 					required
 				></v-text-field>
 				<v-text-field
 					v-model="password"
+					required
+					:rules="passwordRules"
 					:append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
 					:type="show ? 'text' : 'password'"
 					name="password"
@@ -30,6 +25,7 @@
 					:disabled="!valid"
 					color="primary"
 					class="mx-auto d-block"
+					@click="register"
 				>
 					Зарегистрироваться
 				</v-btn>
@@ -50,21 +46,36 @@ import { Component, Vue } from 'vue-property-decorator'
 	components: {},
 })
 export default class Registration extends Vue {
-	valid = true
-	name = ''
-	nameRules = [
-		(v: any) => !!v || 'Name is required',
-		(v: any) =>
-			(v && v.length <= 10) || 'Name must be less than 10 characters',
-	]
+	valid = false
 	email = ''
-	emailRules = [
-		(v: any) => !!v || 'E-mail is required',
-		(v: any) => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+	emailRules = [(v: string) => !!v || 'E-mail обязателен']
+	password = ''
+	passwordRules = [
+		(v: string) => !!v || 'Пароль обязателен',
+		(v: string) =>
+			(v && v.length >= 6) || 'В пароле должно быть больше 5 знаков',
+		(v: string) =>
+			/\d/.test(v) || 'В пароле должна быть хотя бы одна цифра',
+		(v: string) =>
+			/[A-Z]/.test(v) ||
+			'В пароле должна быть хотя бы одна заглавная буква',
+		(v: string) =>
+			/[!@#$%^&*(),.?":{}|<>]/.test(v) ||
+			'В пароле должен быть хотя бы один символ',
 	]
 	show = false
-	validate() {
-		this.$refs.form.validate()
+	register() {
+		this.$axios
+			.post('/api/account/register', {
+				email: this.email,
+				password: this.password,
+			})
+			.then(() => {
+				this.$router.push('/')
+			})
+			.catch(e => {
+				console.log(e)
+			})
 	}
 }
 </script>

@@ -33,11 +33,37 @@
 					</v-btn></router-link
 				>
 
-				<router-link to="/account"
-					><v-avatar color="orange" size="50">
-						<span class="white--text headline">JP</span>
-					</v-avatar></router-link
-				>
+				<router-link to="/login" v-if="!$store.getters.isLogin">
+					<v-btn text color="white" dark>Войти</v-btn>
+				</router-link>
+				<v-menu offset-y v-if="$store.getters.isLogin">
+					<template v-slot:activator="{ on, attrs }">
+						<v-btn text color="white" dark v-bind="attrs" v-on="on">
+							{{ $store.state.user.name }}
+						</v-btn>
+					</template>
+					<v-list>
+						<v-list-item>
+							<v-list-item-content>
+								<v-list-item-title class="text-h6">
+									{{ $store.state.user.name }}
+								</v-list-item-title>
+								<v-list-item-subtitle>{{
+									$store.state.user.email
+								}}</v-list-item-subtitle>
+							</v-list-item-content>
+						</v-list-item>
+						<v-divider></v-divider>
+						<v-list-item link to="/account">
+							<v-list-item-title
+								>Личный кабинет</v-list-item-title
+							>
+						</v-list-item>
+						<v-list-item link to="/logout">
+							<v-list-item-title>Выйти</v-list-item-title>
+						</v-list-item>
+					</v-list>
+				</v-menu>
 			</v-col>
 		</v-row>
 	</v-app-bar>

@@ -34,6 +34,16 @@ namespace arz.eda
             services.AddIdentity<Account, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationContext>();
 
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.Events.OnRedirectToLogin = context =>
+                {
+                    context.Response.Headers["Location"] = context.RedirectUri;
+                    context.Response.StatusCode = 401;
+                    return Task.CompletedTask;
+                };
+            });
+
             services.AddControllers();
         }
 

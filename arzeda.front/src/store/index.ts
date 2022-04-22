@@ -6,9 +6,16 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
 	state: {
+		user: {
+			name: '',
+			email: '',
+		},
 		order: Array<OrderLine>(),
 	},
 	mutations: {
+		login(state, user) {
+			state.user = user
+		},
 		addProduct(state, payload) {
 			const orderLine = state.order.find(
 				x => x.product.id === payload.product.id
@@ -50,6 +57,9 @@ export default new Vuex.Store({
 		},
 	},
 	getters: {
+		isLogin: (state): boolean => {
+			return state.user.email != ''
+		},
 		totalSum: (state, getters): number => {
 			return state.order
 				.map(x => x.product.price * x.count)
