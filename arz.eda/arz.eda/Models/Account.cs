@@ -14,22 +14,22 @@ namespace arz.eda.Models
         /// <summary>
         /// Имя
         /// </summary>
-        public string Name { get; set; }
+        public string? Name { get; set; }
 
         /// <summary>
         /// Адрес
         /// </summary>
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         /// <summary>
         /// Подъезд
         /// </summary>
-        public string Entrance { get; set; }
+        public string? Entrance { get; set; }
 
         /// <summary>
         /// Домофон
         /// </summary>
-        public string Intercom { get; set; }
+        public string? Intercom { get; set; }
 
         /// <summary>
         /// Этаж
@@ -40,7 +40,7 @@ namespace arz.eda.Models
         /// <summary>
         /// Квартира
         /// </summary>
-        public string Flat { get; set; }
+        public string? Flat { get; set; }
 
         /// <summary>
         /// Список заказов
