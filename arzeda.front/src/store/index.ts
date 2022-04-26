@@ -16,6 +16,12 @@ export default new Vuex.Store({
 		login(state, user) {
 			state.user = user
 		},
+		logout(state) {
+			state.user = {
+				name: '',
+				email: '',
+			}
+		},
 		addProduct(state, payload) {
 			const orderLine = state.order.find(
 				x => x.product.id === payload.product.id

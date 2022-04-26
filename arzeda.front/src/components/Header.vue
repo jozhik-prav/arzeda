@@ -59,7 +59,7 @@
 								>Личный кабинет</v-list-item-title
 							>
 						</v-list-item>
-						<v-list-item link to="/logout">
+						<v-list-item link @click="logout">
 							<v-list-item-title>Выйти</v-list-item-title>
 						</v-list-item>
 					</v-list>
@@ -73,5 +73,16 @@
 import { Component, Vue } from 'vue-property-decorator'
 
 @Component
-export default class Header extends Vue {}
+export default class Header extends Vue {
+	logout() {
+		this.$axios
+			.post('/api/account/logout')
+			.then(() => {
+				this.$store.commit('logout')
+			})
+			.catch(e => {
+				console.log(e)
+			})
+	}
+}
 </script>
