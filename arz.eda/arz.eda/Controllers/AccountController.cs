@@ -5,6 +5,8 @@ using arz.eda.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Claims;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace arz.eda.Controllers
 {
@@ -30,6 +32,7 @@ namespace arz.eda.Controllers
             var result = await _userManager.CreateAsync(account, model.Password);
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(account, "user");
                 // установка куки
                 await _signInManager.SignInAsync(account, false);
                 return Ok();
