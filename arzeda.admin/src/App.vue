@@ -1,32 +1,53 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+	<v-app>
+		<v-app-bar
+			app
+			color="primary"
+			dark
+			clipped-left
+			v-if="this.$store.getters.isLogin"
+		>
+			<v-app-bar-nav-icon @click.stop="mini = !mini"></v-app-bar-nav-icon>
+			<router-link to="/">
+				<v-img
+					alt="Vuetify Logo"
+					class="shrink mr-2"
+					contain
+					src="https://cdn.vuetifyjs.com/images/logos/vuetify-logo-dark.png"
+					transition="scale-transition"
+					width="40"
+			/></router-link>
+
+			<v-toolbar-title>Arzeda.Admin</v-toolbar-title>
+		</v-app-bar>
+		<v-navigation-drawer
+			:mini-variant.sync="mini"
+			clipped
+			app
+			v-if="this.$store.getters.isLogin"
+		>
+			<v-list nav>
+				<v-list-item link to="/users">
+					<v-list-item-icon>
+						<v-icon>mdi-folder</v-icon>
+					</v-list-item-icon>
+					<v-list-item-title>Пользователи</v-list-item-title>
+				</v-list-item>
+			</v-list>
+		</v-navigation-drawer>
+		<v-main>
+			<v-container fluid>
+				<router-view></router-view>
+			</v-container>
+		</v-main>
+	</v-app>
 </template>
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator'
+
+@Component
+export default class App extends Vue {
+	mini = false
 }
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
-  }
-}
-</style>
+</script>

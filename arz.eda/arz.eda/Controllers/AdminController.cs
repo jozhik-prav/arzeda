@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace arz.eda.Controllers
 {
-    [Route("api/admin/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AdminController : ControllerBase
     {
@@ -21,14 +21,13 @@ namespace arz.eda.Controllers
             _signInManager = signInManager;
         }
         [HttpPost]
-        [Authorize(Roles = "admin")]
         [Route(nameof(Login))]
         public async Task<IActionResult> Login(LoginInputModel model)
         {
             Account account = await _userManager.FindByEmailAsync(model.Email);
             if (account != null) {
                 var accountRoles = await _userManager.GetRolesAsync(account);
-                if (accountRoles.Contains("Admin")) { 
+                if (accountRoles.Contains("admin")) { 
                     var result =
                     await _signInManager.PasswordSignInAsync(model.Email, model.Password, false, false);
                     if (result.Succeeded)
@@ -70,8 +69,6 @@ namespace arz.eda.Controllers
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(account, "manager");
-                // установка куки
-                await _signInManager.SignInAsync(account, false);
                 return Ok();
             }
             else
@@ -96,7 +93,7 @@ namespace arz.eda.Controllers
             var oneRoles = roles.Select(x => x.FirstOrDefault());
             var result = users.Zip(oneRoles).Select(x => new
             {
-                name = x.First.Name,
+                name = x.First.UserName,
                 email = x.First.Email,
                 role = x.Second
             }).ToList();
