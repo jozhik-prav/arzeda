@@ -22,25 +22,42 @@ namespace arz.eda.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
-            return Ok(await _db.Categories.ToListAsync());
+            return Ok(await _db.Categories.Select(x => new
+            {
+                x.Id, x.Name
+            }).ToListAsync());
         }
 
         [HttpGet]
         [Route("{id}")]
         public async Task<IActionResult> GetById(Guid id)
         {
-            return Ok(await _db.Categories.FindAsync(id));
+            return Ok(await _db.Categories.Select(x => new
+            {
+                x.Id,
+                x.Name
+            }).FirstOrDefaultAsync(x => x.Id == id));
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCategory(Category category)
+        [Route("{name}")]
+        public async Task<IActionResult> CreateCategory(string name)
         {
+            Category category = new () { Name = name };
             _db.Categories.Add(category);
-            await _db.SaveChangesAsync();
-            return Ok();
+            try
+            {
+                await _db.SaveChangesAsync();
+                return Ok(category.Id);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete]
+        [Route("{id}")]
         public async Task<IActionResult> DeleteCategory(Guid id)
         {
             _db.Categories.Remove(new Category() { Id = id });

@@ -20,6 +20,11 @@ const routes: Array<RouteConfig> = [
 		name: 'Users',
 		component: () => import('../views/Users.vue'),
 	},
+	{
+		path: '/categories',
+		name: 'Categories',
+		component: () => import('../views/Categories.vue'),
+	},
 ]
 
 const router = new VueRouter({
