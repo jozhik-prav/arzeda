@@ -25,5 +25,10 @@ namespace arz.eda
             base.OnModelCreating(builder);
             builder.Entity<Order>().OwnsMany(x => x.OrderLines);
         }
+
+        internal object FindAsync(Func<object, bool> p)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

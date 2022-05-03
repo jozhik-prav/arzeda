@@ -33,22 +33,22 @@ namespace arz.eda.Models
         /// <summary>
         /// Подъезд
         /// </summary>
-        public string Entrance { get; set; }
+        public string? Entrance { get; set; }
 
         /// <summary>
         /// Домофон
         /// </summary>
-        public string Intercom { get; set; }
+        public string? Intercom { get; set; }
 
         /// <summary>
         /// Этаж
         /// </summary>
-        public int Floor { get; set; }
+        public int? Floor { get; set; }
 
         /// <summary>
         /// Квартира
         /// </summary>
-        public string Flat { get; set; }
+        public string? Flat { get; set; }
 
         /// <summary>
         /// Сумма
@@ -58,7 +58,7 @@ namespace arz.eda.Models
         /// <summary>
         /// Комментарий
         /// </summary>
-        public string Comment { get; set; }
+        public string? Comment { get; set; }
 
         /// <summary>
         /// Идентификатор заказчика

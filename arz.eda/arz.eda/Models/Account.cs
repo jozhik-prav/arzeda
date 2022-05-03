@@ -17,6 +17,16 @@ namespace arz.eda.Models
         public string? Name { get; set; }
 
         /// <summary>
+        /// Id ресторана (для менеджера)
+        /// </summary>
+        public Guid? RestaurantId { get; set; }
+
+        /// <summary>
+        /// Ссылка на ресторан
+        /// </summary>
+        public Restaurant? Restaurant { get; set; }
+
+        /// <summary>
         /// Адрес
         /// </summary>
         public string? Address { get; set; }

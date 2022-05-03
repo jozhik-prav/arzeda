@@ -5,6 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using arz.eda.Models;
 using Microsoft.EntityFrameworkCore;
+using arz.eda.InputModels;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace arz.eda.Controllers
 {
@@ -13,10 +17,12 @@ namespace arz.eda.Controllers
     public class RestaurantController : Controller
     {
         private ApplicationContext _db;
+        private readonly UserManager<Account> _userManager;
 
-        public RestaurantController(ApplicationContext context)
+        public RestaurantController(ApplicationContext context, UserManager<Account> userManager)
         {
             _db = context;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -26,7 +32,9 @@ namespace arz.eda.Controllers
                 return Ok(await _db.Restaurants.Include(x => x.Categories).Include(x => x.Products).Select(x =>
                     new
                     {
-                        x.Id, x.Name, x.Description, x.Address, x.Image, x.Categories, x.Products, x.TimeWork,
+                        x.Id, x.Name, x.Description, x.Address, x.Image, x.Categories, x.Products,
+                        x.TimeWorkStart,
+                        x.TimeWorkEnd,
                         x.DeliveryPrice, x.MinSum
                     }).ToListAsync());
 
@@ -41,21 +49,77 @@ namespace arz.eda.Controllers
             return Ok(await _db.Restaurants.Include(x => x.Categories).Include(x => x.Products)
                 .Select(x => new
                 {
-                    x.Id, x.Name, x.Description, x.Address, x.Image, x.Categories, x.Products, x.TimeWork,
+                    x.Id, x.Name, x.Description, x.Address, x.Image, x.Categories, x.Products, x.TimeWorkStart, x.TimeWorkEnd,
                     x.DeliveryPrice, x.MinSum
                 }).FirstOrDefaultAsync(x => x.Id == id));
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateRestaurant(Restaurant restaurant)
+        [Authorize(Roles = "manager")]
+        public async Task<IActionResult> CreateRestaurant(RestaurantInputModel model)
         {
-            var categoriesIds = restaurant.Categories.Select(x => x.Id).ToList();
+            var name = User.FindFirst(ClaimTypes.Name);
+            if (name == null)
+                return BadRequest();
+            Account user = await _userManager.FindByNameAsync(name.Value);
+            var categoriesIds = model.Categories;
             var categories = await _db.Categories.Where(x => categoriesIds.Contains(x.Id)).ToListAsync();
-            restaurant.Categories = restaurant.Categories.Select(x =>
-                categories.Any(c => c.Id == x.Id) ? categories.FirstOrDefault(c => c.Id == x.Id) : x).ToList();
+            Restaurant restaurant = new()
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Image = model.Image,
+                Address = model.Address,
+                DeliveryPrice = model.DeliveryPrice,
+                MinSum = model.MinSum,
+                TimeWorkStart = model.TimeWorkStart,
+                TimeWorkEnd = model.TimeWorkEnd,
+                Products = new List<Product>(),
+                Categories = categories
+            };
             _db.Restaurants.Add(restaurant);
-            await _db.SaveChangesAsync();
-            return Ok();
+            try
+            {
+                await _db.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
+            user.Restaurant = restaurant;
+            await _userManager.UpdateAsync(user);
+            return Ok(restaurant.Id);
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "manager")]
+        [Route("{restaurantId}")]
+        public async Task<IActionResult> Update(Guid restaurantId, RestaurantInputModel model)
+        {
+            var restaurant = await _db.Restaurants.Include(x => x.Categories).FirstOrDefaultAsync(x => x.Id == restaurantId);
+            if (restaurant == null)
+                return NotFound();
+            var categoriesIds = model.Categories;
+            var categories = await _db.Categories.Where(x => categoriesIds.Contains(x.Id)).ToListAsync();
+            restaurant.Name = model.Name;
+            restaurant.Description = model.Description;
+            restaurant.Address = model.Address;
+            restaurant.TimeWorkStart = model.TimeWorkStart;
+            restaurant.TimeWorkEnd = model.TimeWorkEnd;
+            restaurant.DeliveryPrice = model.DeliveryPrice;
+            restaurant.MinSum = model.MinSum;
+            restaurant.Image = model.Image;
+            restaurant.Categories.Clear();
+            restaurant.Categories.AddRange(categories);
+            try
+            {
+                await _db.SaveChangesAsync();
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete]

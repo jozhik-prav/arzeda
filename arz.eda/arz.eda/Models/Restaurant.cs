@@ -14,6 +14,11 @@ namespace arz.eda.Models
         /// Идентификатор ресторана
         /// </summary>
         public Guid Id { get; set; } = Guid.NewGuid();
+
+        /// <summary>
+        /// Список менеджеров
+        /// </summary>
+        public List<Account> Managers { get; set; } = new List<Account>();
         
         /// <summary>
         /// Имя 
@@ -36,14 +41,19 @@ namespace arz.eda.Models
         public string Address { get; set; }
 
         /// <summary>
-        /// Время работы
+        /// Время начала работы
         /// </summary>
-        public string TimeWork { get; set; }
+        public DateTime TimeWorkStart { get; set; }
+
+        /// <summary>
+        /// Время окончания работы
+        /// </summary>
+        public DateTime TimeWorkEnd { get; set; }
 
         /// <summary>
         /// Категория, кухня
         /// </summary>
-        public ICollection<Category> Categories { get; set; }
+        public List<Category> Categories { get; set; }
 
         /// <summary>
         /// Меню
