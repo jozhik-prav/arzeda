@@ -29,3 +29,14 @@ export interface OrderLine {
 	product: Product
 	count: number
 }
+
+export interface Account {
+	id: string
+	name: string
+	email: string
+	address: string
+	entrance?: string
+	intercom?: string
+	floor?: number
+	flat?: string
+}

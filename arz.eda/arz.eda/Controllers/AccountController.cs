@@ -61,6 +61,58 @@ namespace arz.eda.Controllers
             return Ok(user);
         }
 
+        [HttpGet]
+        [Route(nameof(UserInfoFull))]
+        [Authorize]
+        public async Task<IActionResult> UserInfoFull()
+        {
+            var name = User.FindFirst(ClaimTypes.Name);
+            if (name == null)
+                return BadRequest();
+            Account user = await _userManager.FindByNameAsync(name.Value);
+            return Ok(new { 
+                id = user.Id, 
+                name = user.UserName, 
+                email = user.Email, 
+                address = user.Address,
+                entrance = user.Entrance, 
+                intercom = user.Intercom, 
+                floor = user.Floor, 
+                flat = user.Flat 
+                });
+        }
+
+        [HttpPut]
+        [Route(nameof(Update))]
+        [Authorize]
+        public async Task<IActionResult> Update(AccountInputModel model)
+        {
+            Account user = await _userManager.FindByIdAsync(model.Id);
+            if (user == null)
+                return BadRequest();
+            user.UserName = model.Name;
+            user.Email = model.Email;
+            user.Address = model.Address;
+            user.Entrance = model.Entrance;
+            user.Intercom = model.Intercom;
+            user.Floor = model.Floor;
+            user.Flat = model.Flat;
+            var result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded)
+            {
+                return Ok();
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+
+                return UnprocessableEntity(ModelState);
+            }
+        }
+
         [HttpPost]
         [Route(nameof(Login))]
         public async Task<IActionResult> Login(LoginInputModel model)
