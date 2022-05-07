@@ -63,9 +63,9 @@ namespace arz.eda.Models
         /// <summary>
         /// Идентификатор заказчика
         /// </summary>
-        //public string AccountId { get; set; }
+        public string AccountId { get; set; }
 
-       // public Account Account { get; set; }
+        public Account Account { get; set; }
 
         /// <summary>
         /// Идентификатор ресторана

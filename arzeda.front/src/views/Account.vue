@@ -164,7 +164,7 @@ export default class AccountView extends Vue {
 				this.account = responce.data
 			})
 			.catch(e => console.log(e))
-		this.orders = (await this.$axios.get('/api/order')).data
+		this.orders = (await this.$axios.get('/api/order/getByAccount')).data
 	}
 
 	save(): void {

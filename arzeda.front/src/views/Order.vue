@@ -44,31 +44,31 @@
 					<v-form>
 						<v-text-field
 							label="Адрес"
-							v-model="address"
+							v-model="account.address"
 						></v-text-field>
 						<v-row>
 							<v-col>
 								<v-text-field
 									label="Подъезд"
-									v-model="entrance"
+									v-model="account.entrance"
 								></v-text-field>
 							</v-col>
 							<v-col>
 								<v-text-field
 									label="Домофон"
-									v-model="intercom"
+									v-model="account.intercom"
 								></v-text-field>
 							</v-col>
 							<v-col>
 								<v-text-field
 									label="Этаж"
-									v-model="floor"
+									v-model="account.floor"
 								></v-text-field>
 							</v-col>
 							<v-col>
 								<v-text-field
 									label="Квартира"
-									v-model="flat"
+									v-model="account.flat"
 								></v-text-field>
 							</v-col>
 						</v-row>
@@ -94,7 +94,7 @@
 <script lang="ts">
 import { Component, Vue } from 'vue-property-decorator'
 import OrderLine from '@/components/OrderLine.vue'
-import { OrderLine as OrderLineType } from '@/Types'
+import { Account, OrderLine as OrderLineType } from '@/Types'
 
 @Component({
 	components: {
@@ -103,12 +103,26 @@ import { OrderLine as OrderLineType } from '@/Types'
 })
 export default class Order extends Vue {
 	e1 = 1
-	address = ''
-	entrance = ''
-	intercom = ''
-	floor = 0
-	flat = ''
 	comment = ''
+	account: Account = {
+		id: '',
+		name: '',
+		email: '',
+		address: '',
+		entrance: '',
+		intercom: '',
+		floor: 0,
+		flat: '',
+	}
+
+	async mounted() {
+		this.$axios
+			.get<Account>('/api/account/userInfoFull')
+			.then(responce => {
+				this.account = responce.data
+			})
+			.catch(e => console.log(e))
+	}
 
 	async send() {
 		const orderLinesState: OrderLineType[] = this.$store.state.order
@@ -119,11 +133,11 @@ export default class Order extends Vue {
 		}))
 		const order = {
 			date: new Date().toISOString(),
-			address: this.address,
-			entrance: this.entrance,
-			intercom: this.intercom,
-			floor: this.floor,
-			flat: this.flat,
+			address: this.account.address,
+			entrance: this.account.entrance,
+			intercom: this.account.intercom,
+			floor: this.account.floor,
+			flat: this.account.flat,
 			price: this.$store.getters.totalSum,
 			comment: this.comment,
 			restaurantId: orderLinesState[0].product.restaurantId,
