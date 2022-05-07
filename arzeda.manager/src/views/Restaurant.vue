@@ -207,6 +207,7 @@ export default class RestaurantView extends Vue {
 			this.isEditing = true
 		} else {
 			this.restaurant = RestaurantToModel(restaurantResponse.data)
+			this.$store.commit('restaurantId', this.restaurant.id)
 		}
 	}
 
@@ -223,7 +224,6 @@ export default class RestaurantView extends Vue {
 					console.log(e)
 				})
 		} else {
-			console.log(this.restaurant.id)
 			const restaurant = RestaurantToApiModel(this.restaurant)
 			this.$axios
 				.put('/api/restaurant/' + restaurant.id, restaurant)

@@ -138,17 +138,78 @@ namespace arz.eda.Controllers
             }
         }
 
-        [HttpPost]
-        [Route("{restaurantId}/product")]
-        public async Task<IActionResult> AddProduct(Guid restaurantId, Product product)
+        [HttpGet]
+        [Route("{restaurantId}/products")]
+        public async Task<IActionResult> GetProductsByRestaurant(Guid restaurantId)
         {
+            var resraurant = await _db.Restaurants.AsNoTracking().Include(x => x.Products)
+                .Select(x => new
+                {
+                    x.Id,
+                    x.Products,
+                }).FirstOrDefaultAsync(x => x.Id == restaurantId);
+           if (resraurant == null)
+                return NotFound();
+           return Ok(resraurant.Products.Select(x => new
+           {
+               x.Id, x.Name, x.Description, x.Image, x.Price
+           }).ToList());
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "manager")]
+        [Route("{restaurantId}/product")]
+        public async Task<IActionResult> AddProduct(Guid restaurantId, ProductInputModel model)
+        {
+            var restaurant = await _db.Restaurants.FirstOrDefaultAsync(x => x.Id == restaurantId);
+            if(restaurant == null)
+                return NotFound();
+            Product product = new()
+            {
+                Name = model.Name,
+                Description = model.Description,
+                Price = model.Price,
+                Image = model.Image,
+                Restaurant = restaurant,
+            };
             product.RestaurantId = restaurantId;
             _db.Products.Add(product);
-            await _db.SaveChangesAsync();
-            return Ok();
+            try
+            {
+                await _db.SaveChangesAsync();
+                return Ok(product.Id);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPut]
+        [Authorize(Roles = "manager")]
+        [Route("{id}/product")]
+        public async Task<IActionResult> UpdateProduct(Guid id, ProductInputModel model)
+        {
+            var product = _db.Products.FirstOrDefault(x => x.Id == id);
+            if(product == null)
+                return NotFound();
+            product.Name = model.Name;
+            product.Description = model.Description;
+            product.Price = model.Price;
+            product.Image = model.Image;
+            try
+            {
+                await _db.SaveChangesAsync();
+                return Ok();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
         }
 
         [HttpDelete]
+        [Authorize(Roles = "manager")]
         [Route("{id}/product")]
         public async Task<IActionResult> DeleteProduct(Guid id)
         {

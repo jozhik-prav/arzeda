@@ -9,6 +9,7 @@ export default new Vuex.Store({
 			name: '',
 			email: '',
 		},
+		restaurantId: '',
 	},
 	mutations: {
 		login(state, user) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
 				name: '',
 				email: '',
 			}
+		},
+		restaurantId(state, restaurantId) {
+			state.restaurantId = restaurantId
 		},
 	},
 	actions: {},

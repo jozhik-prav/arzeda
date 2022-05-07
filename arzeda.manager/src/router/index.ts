@@ -20,6 +20,11 @@ const routes: Array<RouteConfig> = [
 		name: 'Restaurant',
 		component: () => import('../views/Restaurant.vue'),
 	},
+	{
+		path: '/products',
+		name: 'Products',
+		component: () => import('../views/Products.vue'),
+	},
 ]
 
 const router = new VueRouter({

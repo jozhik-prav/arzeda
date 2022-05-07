@@ -33,6 +33,12 @@
 					</v-list-item-icon>
 					<v-list-item-title>Ресторан</v-list-item-title>
 				</v-list-item>
+				<v-list-item link to="/products">
+					<v-list-item-icon>
+						<v-icon>mdi-folder</v-icon>
+					</v-list-item-icon>
+					<v-list-item-title>Товары</v-list-item-title>
+				</v-list-item>
 			</v-list>
 		</v-navigation-drawer>
 		<v-main>
