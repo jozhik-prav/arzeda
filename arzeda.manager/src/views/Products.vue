@@ -23,32 +23,36 @@
 						<v-card-text>
 							<v-container>
 								<v-row>
-									<v-col cols="12" sm="12" md="12">
+									<v-col cols="6">
+										<v-img
+											:src="editedItem.image"
+											aspect-ratio="1"
+											class="grey lighten-2 mx-auto"
+											width="178px"
+										></v-img>
+										<v-file-input
+											accept="image/*"
+											label="Изображение товара"
+											prepend-icon="mdi-camera"
+											@change="encodeImageFileAsURL"
+										></v-file-input>
+									</v-col>
+									<v-col>
 										<v-text-field
 											v-model="editedItem.name"
 											label="Название товара"
 										></v-text-field>
-									</v-col>
-									<v-col cols="12" sm="12" md="12">
-										<v-text-field
+										<v-textarea
 											v-model="editedItem.description"
 											label="Описание"
-										></v-text-field>
-									</v-col>
-									<v-col cols="12" sm="12" md="12">
-										<v-text-field
-											v-model="editedItem.image"
-											label="Изображение"
-										></v-text-field>
-									</v-col>
-									<v-col cols="12" sm="6" md="4">
-										<v-text-field
-											v-model="editedItem.price"
-											type="number"
-											label="Цена"
-										></v-text-field>
+										></v-textarea>
 									</v-col>
 								</v-row>
+								<v-text-field
+									v-model="editedItem.price"
+									type="number"
+									label="Цена"
+								></v-text-field>
 							</v-container>
 						</v-card-text>
 
@@ -170,6 +174,21 @@ export default class ProductsView extends Vue {
 				this.products = response.data
 			})
 			.catch((e) => console.log(e))
+	}
+
+	encodeImageFileAsURL(event): void {
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
+		let me = this
+		console.log(event)
+		console.log(event.file)
+		console.log(typeof event)
+		var file = event
+		var reader = new FileReader()
+		reader.onloadend = function () {
+			console.log('RESULT', reader.result)
+			me.editedItem.image = reader.result
+		}
+		reader.readAsDataURL(file)
 	}
 
 	editItem(item: any) {

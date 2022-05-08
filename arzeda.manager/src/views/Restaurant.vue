@@ -17,27 +17,39 @@
 			</v-btn>
 		</v-card-title>
 		<v-form class="mx-4" v-model="validate">
-			<v-text-field
-				label="Имя ресторана"
-				v-model="restaurant.name"
-				:rules="[(v) => !!v || 'Поле обязательное']"
-				:disabled="!isEditing"
-				required
-			></v-text-field>
-			<v-textarea
-				label="Описание"
-				v-model="restaurant.description"
-				:rules="[(v) => !!v || 'Поле обязательное']"
-				:disabled="!isEditing"
-				required
-			></v-textarea>
-			<v-text-field
-				label="Изображение ресторана"
-				v-model="restaurant.image"
-				:rules="[(v) => !!v || 'Поле обязательное']"
-				:disabled="!isEditing"
-				required
-			></v-text-field>
+			<v-row>
+				<v-col cols="2">
+					<v-img
+						:src="restaurant.image"
+						aspect-ratio="1"
+						class="grey lighten-2 mx-auto"
+						width="178px"
+					></v-img>
+					<v-file-input
+						accept="image/*"
+						label="Изображение ресторана"
+						prepend-icon="mdi-camera"
+						:disabled="!isEditing"
+						@change="encodeImageFileAsURL"
+					></v-file-input>
+				</v-col>
+				<v-col>
+					<v-text-field
+						label="Имя ресторана"
+						v-model="restaurant.name"
+						:rules="[(v) => !!v || 'Поле обязательное']"
+						:disabled="!isEditing"
+						required
+					></v-text-field>
+					<v-textarea
+						label="Описание"
+						v-model="restaurant.description"
+						:rules="[(v) => !!v || 'Поле обязательное']"
+						:disabled="!isEditing"
+						required
+					></v-textarea>
+				</v-col>
+			</v-row>
 			<v-text-field
 				label="Адрес ресторана"
 				v-model="restaurant.address"
@@ -202,6 +214,21 @@ export default class RestaurantView extends Vue {
 			this.restaurant = RestaurantToModel(restaurantResponse.data)
 			this.$store.commit('restaurantId', this.restaurant.id)
 		}
+	}
+
+	encodeImageFileAsURL(event): void {
+		// eslint-disable-next-line @typescript-eslint/no-this-alias
+		let me = this
+		console.log(event)
+		console.log(event.file)
+		console.log(typeof event)
+		var file = event
+		var reader = new FileReader()
+		reader.onloadend = function () {
+			console.log('RESULT', reader.result)
+			me.restaurant.image = reader.result
+		}
+		reader.readAsDataURL(file)
 	}
 
 	save(): void {
