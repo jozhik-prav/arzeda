@@ -96,19 +96,7 @@ export default class Users extends Vue {
 	}
 	dialog = false
 	async mounted(): Promise<void> {
-		this.$axios
-			.get('/api/account/userInfo')
-			.then((result) => {
-				this.$store.commit('login', {
-					name: result.data.name,
-					email: result.data.email,
-				})
-			})
-			.catch(() => {
-				this.$router.push('/login')
-			})
 		this.users = (await this.$axios.post('/api/admin/users')).data
-		console.log(this.users)
 	}
 	editItem(item: any) {
 		this.editedIndex = this.users.indexOf(item)

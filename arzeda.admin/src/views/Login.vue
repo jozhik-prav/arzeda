@@ -27,9 +27,6 @@
 				>
 					Войти
 				</v-btn>
-				<router-link to="/registration" class="text-decoration-none">
-					<v-btn text color="primary"> Зарегистрироваться </v-btn>
-				</router-link>
 			</v-form>
 		</v-card-text>
 	</v-card>
