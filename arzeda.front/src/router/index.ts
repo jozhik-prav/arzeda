@@ -1,3 +1,5 @@
+import store from '@/store'
+import axios from 'axios'
 import Vue from 'vue'
 import VueRouter, { RouteConfig } from 'vue-router'
 import Home from '../views/Home.vue'
@@ -25,21 +27,6 @@ const routes: Array<RouteConfig> = [
 		path: '/account',
 		name: 'Account',
 		component: () => import('../views/Account.vue'),
-	},
-	{
-		path: '/admin',
-		name: 'Admin',
-		component: () => import('../views/Admin.vue'),
-	},
-	{
-		path: '/admin-restaurant',
-		name: 'AdminRestaurant',
-		component: () => import('../views/Admin-restaurant.vue'),
-	},
-	{
-		path: '/admin-courier',
-		name: 'AdminCourier',
-		component: () => import('../views/Admin-courier.vue'),
 	},
 	{
 		path: '/login',

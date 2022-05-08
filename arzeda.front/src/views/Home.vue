@@ -53,16 +53,6 @@ export default class Home extends Vue {
 	restaurants: Restaurant[] = []
 
 	async mounted() {
-		this.$axios
-			.get('/api/account/userInfo')
-			.then(result => {
-				console.log(result.data)
-				this.$store.commit('login', {
-					name: result.data.name,
-					email: result.data.email,
-				})
-			})
-			.catch()
 		this.restaurants = (await this.$axios.get('/api/restaurant')).data
 	}
 }

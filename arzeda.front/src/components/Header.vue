@@ -74,6 +74,19 @@ import { Component, Vue } from 'vue-property-decorator'
 
 @Component
 export default class Header extends Vue {
+	async mounted() {
+		this.$axios
+			.get('/api/account/userInfo')
+			.then(result => {
+				console.log(result.data)
+				this.$store.commit('login', {
+					name: result.data.name,
+					email: result.data.email,
+				})
+			})
+			.catch()
+	}
+
 	logout() {
 		this.$axios
 			.post('/api/account/logout')
