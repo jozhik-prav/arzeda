@@ -43,25 +43,20 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
 	if (to.matched.some((record) => record.meta.requiresAuth)) {
-		console.log(1)
 		if (!store.getters.isLogin) {
-			console.log(2)
 			axios
 				.get('/api/account/userInfo')
 				.then((response) => {
 					store.commit('login', response.data)
-					console.log(3)
 					next()
 				})
 				.catch(() => {
-					console.log(4)
 					next({
 						path: '/login',
 						query: { redirect: to.fullPath },
 					})
 				})
 		} else {
-			console.log(5)
 			next()
 		}
 	} else {
