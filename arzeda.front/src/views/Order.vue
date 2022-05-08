@@ -34,7 +34,7 @@
 					Продолжить
 				</v-btn>
 
-				<v-btn text>
+				<v-btn text @click="back">
 					Вернуться к меню
 				</v-btn>
 			</v-stepper-content>
@@ -122,6 +122,10 @@ export default class Order extends Vue {
 				this.account = responce.data
 			})
 			.catch(e => console.log(e))
+	}
+
+	back() {
+		this.$router.go(-1)
 	}
 
 	async send() {
