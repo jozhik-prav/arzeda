@@ -192,13 +192,6 @@ export default class RestaurantView extends Vue {
 		minSum: 0,
 	}
 	async mounted(): Promise<void> {
-		try {
-			const user = (await this.$axios.get('/api/account/userInfo')).data
-			this.$store.commit('login', user)
-		} catch {
-			this.$router.push('/login')
-			return
-		}
 		this.categories = (await this.$axios.get('/api/category')).data
 		const restaurantResponse = await this.$axios.get<RestaurantApiModel>(
 			'/api/manager/restaurantInfo?r=' + Math.random()
