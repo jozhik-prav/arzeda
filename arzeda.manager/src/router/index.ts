@@ -11,6 +11,9 @@ const routes: Array<RouteConfig> = [
 		path: '/',
 		name: 'Restaurant',
 		component: Restaurant,
+		meta: {
+			requiresAuth: true,
+		},
 	},
 	{
 		path: '/login',
